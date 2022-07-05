@@ -25,6 +25,10 @@ class World {
         this.status = ''
 
         //  Rides
+        this.startPlace = ''
+        this.finishPlace = ''
+        this.rideID = ''
+        this.rideStatus = ''
 
         //  Auxiliares
         this.token = ''
@@ -78,6 +82,32 @@ class World {
         this.model = model
         this.licensePlate = licensePlate
         this.status = status
+    }
+
+    setRide(licensePlate, startPlace, finishPlace) {
+        this.licensePlate = licensePlate
+        this.startPlace = startPlace
+        this.finishPlace = finishPlace
+    }
+
+    setRideStatus(rideID, status) {
+        this.rideID = rideID
+        this.rideStatus = status
+    }
+
+    async patch(path, data, isAutenticated = false) {
+        let response;
+        if (isAutenticated) {
+            const headers = {
+                'x-access-token': this.token
+            }
+            response = await api.patch(path, data, { headers: headers });
+            this.response = response.data;
+        }
+        else {
+            response = await api.patch(path, data);
+            this.response = response.data;
+        }
     }
 }
 
